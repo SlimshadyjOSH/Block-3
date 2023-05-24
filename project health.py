@@ -6,19 +6,18 @@ Created on Wed May 24 09:16:23 2023
 """
 
 import pandas as pd
-import json
 
-#df  = pd.read_csv('C:/Users/Melissa/OneDrive - Avans Hogeschool/Documents/Utrecht/datasets/flights.csv')
+# Read the Excel file into a DataFrame
+df = pd.read_excel("C:/Users\Admin\Desktop\disease and symptoms (1).xlsx")
 
-df = pd.read_excel('C:/Users/Melissa/OneDrive - Avans Hogeschool/Desktop/disease and symptoms.xlsx')
+# Clean all string columns
+for column in df.columns:
+    if df[column].dtype == 'object':
+        df[column] = df[column].str.replace('"', '')
+        df[column] = df[column].str.replace('{', '')
+        df[column] = df[column].str.replace('}', '')
+        df[column] = df[column].str.replace('[', '')
+        df[column] = df[column].str.split(':').str.get(-1)
 
-#get the data ready 
-#[{"symptoms":"Anxiety and nervousness"}
-
-#df['Address'] = df['Address'].str.split(',').str.get(-1)
-df['symptoms'] = df['symptoms'].str.replace('"',"")
-df['symptoms'] = df['symptoms'].str.replace('{',"")
-df['symptoms'] = df['symptoms'].str.replace('}',"")
-df['symptoms'] = df['symptoms'].str.replace('[',"")
-
-df['symptoms'] = df['symptoms'].str.split(':').str.get(-1)
+# Save the cleaned data to a new Excel file
+df.to_excel("C:/Users\Admin\Desktop\cleaned_data.xlsx", index=False)
